@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.open-meteo.com https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' blob: https://cdn.pixabay.com; frame-src 'self' https://*.supabase.co https://www.youtube.com https://open.spotify.com; form-action 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'">
+  <title>Nossa História de Amor 💖</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Dancing+Script:wght@700&family=Great+Vibes&family=Montserrat:wght@400;600&family=Pacifico&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cor-fundo-site: #fdfbfb;
+      --cor-principal: #d81b60;
+      --cor-secundaria: #f48fb1;
+      --cor-suave: #ffe4ec;
+      --superficie: #fff;
+      --texto-secundario: #777;
+      --borda-suave: #f5f5f5;
+      --raio-cartao: 20px;
+      --raio-controle: 12px;
+      --sombra-cartao: 0 6px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
+    button,
+    input,
+    select { font: inherit; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: var(--cor-fundo-site);
+      color: #555;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.8s ease;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Partículas de Clima no Fundo */
+    .particula {
+      position: fixed;
+      top: -20px;
+      z-index: 0;
+      pointer-events: none;
+      animation: cair linear infinite;
+    }
+    @keyframes cair {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+    }
+
+    .conteudo-site { position: relative; z-index: 2; }
+
+    h1 {
+      color: var(--cor-principal);
+      font-weight: 300;
+      font-size: 2.2em;
+      text-align: center;
+      margin-top: 25px;
+      margin-bottom: 5px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #888;
+      font-weight: 300;
+      margin-bottom: 25px;
+    }
+
+    /* Painel do Clima */
+    .painel-clima {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      padding: 8px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 0 auto 25px auto;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: #444;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .topo-clima-box { text-align: center; }
+
+    /* Botões Delicados */
+    .btn-delicado {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--cor-secundaria);
+      color: var(--cor-principal);
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.82em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(244, 143, 177, 0.15);
+    }
+    .btn-delicado:hover {
+      background: #fff0f5;
+      transform: translateY(-2px);
+    }
+    .btn-apagar { border-color: #ffcdd2; color: #e57373; }
+    .btn-apagar:hover { background: #ffebee; }
+
+    /* Alternância de Telas */
+    .tela { display: none; padding: 20px; max-width: 1000px; margin: 0 auto; }
+    .tela.ativa { display: block; animation: fade-in 0.4s ease; }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Vitrine Inicial (Home) */
+    .painel-criar-album {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px dashed var(--cor-secundaria);
+      border-radius: var(--raio-cartao);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .titulo-painel { margin-top: 0; color: var(--cor-principal); font-weight: 500; }
+    .controles-criar-album { display: flex; justify-content: center; gap: 8px; }
+    .controles-mural { display: flex; gap: 8px; margin-top: 10px; }
+
+    .campo-texto {
+      min-width: 0;
+      padding: 8px 12px;
+      border: 1px solid var(--cor-secundaria);
+      border-radius: var(--raio-controle);
+      color: #555;
+      outline: none;
+    }
+
+    .campo-texto:focus { border-color: var(--cor-principal); box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12); }
+    .campo-nome-album { width: min(100%, 320px); }
+    .campo-lembrete { flex: 1; font-size: 0.85em; }
+    .rotulo-config { color: var(--texto-secundario); }
+    .btn-voltar { margin-bottom: 15px; }
+    .btn-adicionar-foto { color: #fff; border-color: #fff; background: rgba(0, 0, 0, 0.2); }
+    .seletor-cor { border: 0; width: 35px; height: 28px; cursor: pointer; background: none; vertical-align: middle; }
+
+    .grid-albuns {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card-galeria {
+      background: var(--superficie);
+      border-radius: var(--raio-cartao);
+      overflow: hidden;
+      box-shadow: var(--sombra-cartao);
+      border: 1px solid var(--borda-suave);
+      transition: transform 0.3s;
+      position: relative;
+    }
+    .card-galeria:hover { transform: translateY(-4px); }
+
+    .capa-album { width: 100%; height: 130px; object-fit: cover; cursor: pointer; }
+    .icone-album {
+      width: 75px; height: 75px; border-radius: 50%; border: 4px solid #fff;
+      object-fit: cover; position: absolute; top: 90px; left: 20px; background: #fff;
+      cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .info-galeria { padding: 45px 20px 20px; }
+    .info-galeria h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #333; outline: none; }
+    .acoes-galeria { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+    .feed-section { margin: 36px 0; }
+    .feed-section h2 { margin: 0 0 14px; color: var(--cor-principal); font-size: 1.35em; }
+    .post-composer { padding: 18px; margin-bottom: 18px; background: rgba(255,255,255,0.92); border: 1px solid #fce4ec; border-radius: var(--raio-cartao); }
+    .post-composer textarea { display: block; width: 100%; min-height: 92px; resize: vertical; font: inherit; line-height: 1.5; }
+    .post-composer textarea::placeholder { color: #999; }
+    .post-composer-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+    .post-composer-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+    .upload-progress { width: 100%; height: 8px; margin-top: 12px; accent-color: var(--cor-principal); }
+    .post-media-preview { position: relative; width: min(100%, 360px); margin-top: 12px; }
+    .post-media-preview img { display: block; width: 100%; max-height: 260px; object-fit: contain; border-radius: var(--raio-controle); background: #fff8f9; }
+    .post-feed-status { min-height: 1.3em; margin: 8px 0 0; color: var(--texto-secundario); font-size: 0.85em; }
+    .post-list { display: grid; gap: 14px; }
+    .post-card { min-width: 0; padding: 18px; background: var(--superficie); border: 1px solid var(--borda-suave); border-radius: var(--raio-cartao); box-shadow: var(--sombra-cartao); }
+    .post-delete { padding: 2px 8px; font-size: 0.7em; }
+    .post-header, .post-author, .post-actions, .post-comment-form { display: flex; align-items: center; gap: 10px; }
+    .post-header { justify-content: space-between; }
+    .post-avatar { display: grid; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: var(--cor-suave); }
+    .post-date { color: var(--texto-secundario); font-size: 0.78em; }
+    .post-copy { margin: 12px 0; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .post-media { display: block; width: 100%; max-height: 560px; margin: 10px auto; object-fit: contain; border-radius: var(--raio-controle); background: #fff8f9; }
+    .post-actions { justify-content: space-between; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid var(--borda-suave); border-bottom: 1px solid var(--borda-suave); }
+    .post-comments { display: grid; gap: 8px; margin: 12px 0; }
+    .post-comment { padding: 8px 10px; border-left: 3px solid var(--cor-secundaria); border-radius: 0 var(--raio-controle) var(--raio-controle) 0; background: #fff8f9; overflow-wrap: anywhere; }
+    .post-comment-form input { flex: 1; min-width: 0; }
+    .feed-empty-state {
+      margin: 0;
+      padding: 32px 18px;
+      border: 1px dashed var(--cor-secundaria);
+      border-radius: var(--raio-cartao);
+      background: var(--superficie);
+      color: var(--texto-secundario);
+      text-align: center;
+    }
+    .feed-skeleton-card { padding: 18px; margin-bottom: 14px; border: 1px solid var(--borda-suave); border-radius: var(--raio-cartao); background: var(--superficie); }
+    .skeleton-line { height: 12px; margin-bottom: 8px; border-radius: 6px; background: linear-gradient(90deg, #f0f0f0 25%, #fce4ec 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .skeleton-line--short { width: 30%; }
+    .skeleton-line--medium { width: 62%; }
+    .skeleton-line--wide { width: 100%; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .feed-more { display: block; margin: 16px auto 0; }
+
+    .card-relacionamento-widget { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--cor-secundaria); border-radius: var(--raio-controle); background: #fff8f9; }
+    .card-relacionamento-icone { display: grid; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: var(--cor-suave); }
+    .card-relacionamento-widget strong { color: var(--cor-principal); }
+    .card-relacionamento-widget .perfil-resumo { margin: 2px 0 0; }
+    .contador-tempo-juntos { margin: 4px 0; color: var(--texto-secundario); font-size: 0.86em; font-variant-numeric: tabular-nums; }
+    .proxima-data-relacionamento { margin: 0; color: var(--texto-secundario); font-size: 0.76em; }
+
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      min-height: 66px;
+      padding: 8px max(10px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--borda-suave);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -4px 15px rgba(216, 27, 96, 0.05);
+    }
+    .mobile-nav-button { display: grid; min-width: 64px; min-height: 48px; gap: 2px; justify-items: center; border: 0; border-radius: 14px; background: transparent; color: var(--cor-principal); font: inherit; font-size: 0.72em; }
+    .mobile-nav-button.ativa { background: var(--cor-principal); color: #fff; }
+    .mobile-nav-icon { font-size: 1.4em; line-height: 1; }
+    .btn-mobile-player-toggle { display: none; position: fixed; right: 16px; bottom: 78px; z-index: 101; width: 46px; height: 46px; place-items: center; padding: 0; border-radius: 50%; background: var(--cor-principal); color: #fff; font-size: 1.1em; box-shadow: 0 4px 14px rgba(216, 27, 96, 0.22); }
+
+    @media (max-width: 900px) {
+      .mobile-bottom-nav { display: flex; }
+      .conteudo-site { padding-bottom: 86px; }
+      .btn-mobile-player-toggle:not(.hidden) { display: grid; }
+    }
+
+    /* Álbum Aberto */
+    .header-album-aberto {
+      position: relative;
+      border-radius: var(--raio-cartao);
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+    .capa-grande { width: 100%; height: 240px; object-fit: cover; }
+    .infos-header-aberto {
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+      padding: 30px 25px 20px 25px; color: white; display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .titulo-album-aberto { margin: 0; font-size: 2.2em; outline: none; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
+
+    .painel-config-aberto {
+      background: rgba(255,255,255,0.95);
+      border-radius: var(--raio-cartao);
+      padding: 15px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      margin-bottom: 25px;
+      font-size: 0.9em;
+    }
+
+    /* Layout Pinterest para Fotos */
+    .pinterest-grid {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    @media (max-width: 650px) {
+      .pinterest-grid { column-count: 1; }
+      .tela { padding: 16px; }
+      .grid-albuns { grid-template-columns: minmax(0, 1fr); }
+      .controles-criar-album,
+      .controles-mural { flex-direction: column; }
+      .campo-nome-album,
+      .controles-criar-album .btn-delicado,
+      .controles-mural .btn-delicado { width: 100%; }
+      .post-composer-controls { align-items: stretch; flex-direction: column; }
+      .post-composer-controls > .btn-delicado { width: 100%; }
+      .post-comment-form { align-items: stretch; }
+      .painel-config-aberto { align-items: stretch; }
+      .painel-config-aberto > div { flex: 1 1 100%; }
+      .infos-header-aberto { flex-wrap: wrap; align-items: center; }
+      .titulo-album-aberto { font-size: 1.8em; }
+    }
+
+    .album-card {
+      background: #fff;
+      padding: 18px;
+      border-radius: var(--raio-cartao);
+      box-shadow: var(--sombra-cartao);
+      border: 1px solid var(--borda-suave);
+      margin-bottom: 20px;
+      break-inside: avoid;
+      position: relative;
+    }
+
+    .controles-foto-topo {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-bottom: 10px;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+    }
+    .album-card:hover .controles-foto-topo { opacity: 1; }
+
+    .album-card h3 { outline: none; margin: 5px 0; font-size: 1.2em; color: #333; }
+    .album-card p { outline: none; margin: 0; color: #777; font-size: 0.9em; }
+    .album-card .titulo-foto { font-family: var(--fonte-album, inherit); }
+    .controles-efeito { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .btn-compacto { font-size: 0.75em; }
+
+    .foto-container {
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 14px;
+      width: 100%;
+      position: relative;
+    }
+    .foto-memoria { width: 100%; display: block; object-fit: cover; }
+
+    /* Efeitos de Foto */
+    .efeito-polaroid { background: #fff; padding: 10px 10px 35px 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .efeito-vintage .foto-memoria { filter: sepia(0.6) contrast(1.1); }
+    .efeito-noir .foto-memoria { filter: grayscale(1) contrast(1.2); }
+    .efeito-warm .foto-memoria { filter: saturate(1.4); }
+
+    .painel-edicao {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #f5f5f5;
+    }
+    .emojipedia-tabs { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+    .box-emojipedia { max-height: 70px; overflow-y: auto; background: #fafafa; border-radius: 10px; padding: 6px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .emoji-item { font-size: 1.2em; cursor: pointer; transition: transform 0.2s; user-select: none; }
+    .emoji-item:hover { transform: scale(1.3); }
+
+    .figurinha { position: absolute; font-size: 30px; cursor: move; user-select: none; z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+    input[type="file"] { display: none; }
+
+    .topo-login {
+      max-width: 1000px;
+      margin: 10px auto 0;
+      padding: 0 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .botao-logout {
+      display: none;
+    }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 25, 0.65);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: min(420px, 100%);
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(216,27,96,0.12);
+      border-radius: var(--raio-cartao);
+      padding: 24px;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+    }
+
+    .auth-card h2 {
+      margin: 0 0 8px;
+      color: var(--cor-principal);
+      text-align: center;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    .auth-card label {
+      display: block;
+      margin: 10px 0 8px;
+      color: #666;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+
+    .auth-card input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--cor-secundaria);
+      border-radius: var(--raio-controle);
+      margin-bottom: 10px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.95em;
+      outline: none;
+    }
+
+    .auth-card input:focus { border-color: var(--cor-principal); box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12); }
+
+    .auth-card button {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .auth-status {
+      min-height: 1.4em;
+      color: #a3164c;
+      font-size: 0.88em;
+      text-align: center;
+    }
+
+    .modal-auth-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 210;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(30, 20, 25, 0.65);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-auth-corpo {
+      width: min(460px, 100%);
+      padding: 24px;
+      border: 1px solid rgba(216, 27, 96, 0.12);
+      border-radius: var(--raio-cartao);
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .modal-auth-corpo h2 { margin: 0 0 16px; color: var(--cor-principal); }
+    .modal-auth-corpo label { display: block; margin: 12px 0 6px; color: var(--texto-secundario); font-size: 0.86em; }
+    .modal-auth-corpo input,
+    .modal-auth-corpo textarea { width: 100%; margin-bottom: 4px; font-family: inherit; }
+    .modal-auth-corpo textarea { min-height: 76px; resize: vertical; }
+    .perfil-acoes { display: flex; gap: 8px; margin-top: 14px; }
+    .perfil-acoes button { flex: 1; }
+    .perfil-salvar { border-color: var(--cor-principal); background: var(--cor-principal); color: #fff; }
+    .perfil-resumo { margin: 8px 0 0; color: var(--texto-secundario); font-size: 0.84em; overflow-wrap: anywhere; }
+
+    .upload-status {
+      display: block;
+      min-height: 1.4em;
+      margin: -12px 0 12px;
+      color: var(--texto-secundario);
+      font-size: 0.82em;
+      text-align: right;
+    }
+
+    .auth-hint {
+      color: #666;
+      font-size: 0.82em;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="conteiner-particulas"></div>
+
+  <div class="conteudo-site">
+
+    <div class="topo-login">
+      <button id="botao-login" class="btn-delicado" onclick="mostrarModalLogin()">🔐 Entrar</button>
+      <button id="botao-logout" class="btn-delicado btn-apagar botao-logout" onclick="logoutSeguro()">Sair</button>
+    </div>
+
+    <h1 id="topo-site">Nossa História de Amor ✨</h1>
+    <p class="subtitulo">Nosso cantinho de memórias, sons e carinho.</p>
+
+    <div id="auth-modal" class="auth-overlay" aria-modal="true" role="dialog">
+      <div class="auth-card">
+        <h2>Nossa História</h2>
+        <div id="auth-form">
+          <div id="login-options">
+          <p class="auth-hint">Confirme seu e-mail após o cadastro. A senha não será salva nas pastas locais.</p>
+          <form id="login-form" onsubmit="validarLogin(event)">
+          <label for="login-email">E-mail</label>
+          <input id="login-email" type="email" placeholder="Digite seu e-mail" maxlength="254" autocomplete="username" required>
+
+          <label for="login-senha">Senha</label>
+          <input id="login-senha" type="password" placeholder="Digite sua senha" maxlength="128" autocomplete="current-password" required>
+
+          <button id="botao-enviar-login" class="btn-delicado" type="submit">Entrar</button>
+          <button id="botao-alternar-cadastro" class="btn-delicado" type="button" onclick="alternarModoCadastro()">Criar conta</button>
+          <button id="botao-reenviar-confirmacao" class="btn-delicado hidden" type="button" onclick="reenviarConfirmacaoEmail()">Reenviar confirmação de e-mail</button>
+          </form>
+          </div>
+          <p id="auth-status" class="auth-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-perfil" class="modal-auth-overlay hidden" aria-modal="true" role="dialog" aria-labelledby="titulo-modal-perfil">
+      <div class="modal-auth-corpo">
+        <h2 id="titulo-modal-perfil">Editar Perfil 🌸</h2>
+        <form id="form-perfil" onsubmit="salvarConfigPerfilModal(event)">
+          <label for="perfil-displayname">Nome de exibição</label>
+          <input class="campo-texto" type="text" id="perfil-displayname" maxlength="60" autocomplete="name" required>
+
+          <label for="perfil-username">Username (@)</label>
+          <input class="campo-texto" type="text" id="perfil-username" maxlength="25" pattern="@?[A-Za-z0-9._]{3,24}" autocomplete="nickname" placeholder="seu.username" required>
+
+          <label for="perfil-bio">Bio</label>
+          <textarea class="campo-texto" id="perfil-bio" rows="3" maxlength="160"></textarea>
+
+          <label for="perfil-data-inicio">Data de início do namoro</label>
+          <input class="campo-texto" type="date" id="perfil-data-inicio">
+
+          <p id="status-perfil" class="post-feed-status" role="status" aria-live="polite"></p>
+          <div class="perfil-acoes">
+            <button class="btn-delicado perfil-salvar" type="submit">Salvar</button>
+            <button class="btn-delicado btn-apagar" type="button" onclick="fecharModalPerfil()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Widget Clima Guarulhos -->
+    <div class="topo-clima-box">
+      <div class="painel-clima" id="painel-clima">
+        <span id="icone-clima">⏳</span>
+        <span id="texto-clima">Carregando clima de Guarulhos...</span>
+      </div>
+    </div>
+
+    <!-- Áudio Ambiente (Sons Calmos de Cada Pasta) -->
+    <audio id="player-audio" loop></audio>
+
+    <!-- TELA 1: HOME / VITRINE DE PASTAS -->
+    <div id="tela-home" class="tela ativa">
+      
+      <div class="painel-criar-album">
+        <h3 class="titulo-painel">✨ Criar Nova Pasta de Álbum</h3>
+        <div class="controles-criar-album">
+          <input class="campo-texto campo-nome-album" type="text" id="novo-nome" placeholder="Nome do álbum...">
+          <button class="btn-delicado" onclick="criarAlbum()">Criar Pasta</button>
+        </div>
+      </div>
+
+      <div class="grid-albuns" id="grid-albuns"></div>
+
+      <section class="feed-section" aria-labelledby="titulo-feed">
+        <h2 id="titulo-feed">💌 Nossa timeline</h2>
+        <aside class="card-relacionamento-widget" aria-label="Resumo do perfil">
+          <span class="card-relacionamento-icone" aria-hidden="true">💞</span>
+          <div>
+            <strong id="perfil-widget-nome">Nossa História</strong>
+            <p id="perfil-resumo" class="perfil-resumo"></p>
+            <div id="contador-tempo-juntos" class="contador-tempo-juntos" aria-live="off">Defina a data de início do namoro</div>
+            <p class="proxima-data-relacionamento">Próxima data: <strong id="proxima-data-relacionamento">Aniversário de Namoro</strong> 💍</p>
+          </div>
+        </aside>
+        <form id="form-post-feed" class="post-composer" onsubmit="publicarPost(event)">
+          <label class="hidden" for="texto-post">Compartilhe uma memória</label>
+          <textarea id="texto-post" class="campo-texto" maxlength="2000" placeholder="Compartilhe uma memória..." rows="3"></textarea>
+          <div class="post-composer-controls">
+            <div class="post-composer-tools">
+              <button class="btn-delicado" type="button" onclick="abrirConfigPerfil()">👤 Perfil</button>
+              <button class="btn-delicado" type="button" onclick="document.getElementById('input-midia-post').click()">📷 Foto</button>
+              <input class="hidden" type="file" id="input-midia-post" accept="image/*" onchange="carregarMidiaPost(event)">
+              <button class="btn-delicado btn-apagar hidden" type="button" id="remover-midia-post" onclick="limparMidiaPost()">Remover foto</button>
+            </div>
+            <button class="btn-delicado" type="submit" id="botao-publicar-post">Publicar</button>
+          </div>
+          <progress id="barra-progresso-upload" class="upload-progress hidden" max="100" value="0"></progress>
+          <div id="preview-midia-container" class="post-media-preview hidden">
+            <img id="preview-img-post" alt="Prévia da foto da publicação">
+          </div>
+          <p id="status-post-feed" class="post-feed-status" role="status" aria-live="polite"></p>
+        </form>
+        <div id="lista-posts-feed" class="post-list" aria-live="polite" aria-busy="true">
+          <div class="feed-skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-line--short"></div><div class="skeleton-line skeleton-line--wide"></div><div class="skeleton-line skeleton-line--medium"></div></div>
+          <div class="feed-skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-line--short"></div><div class="skeleton-line skeleton-line--wide"></div><div class="skeleton-line skeleton-line--medium"></div></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- TELA 2: ÁLBUM ABERTO -->
+    <div id="tela-album" class="tela">
+      <button class="btn-delicado btn-voltar" onclick="voltarParaHome()">⬅ Voltar à Galeria</button>
+      
+      <div class="header-album-aberto" id="header-album-aberto">
+        <img src="" class="capa-grande" id="capa-aberta">
+        <div class="infos-header-aberto">
+          <div>
+            <h2 class="titulo-album-aberto" id="titulo-aberto" contenteditable="true" onblur="salvarTituloAlbum()"></h2>
+          </div>
+          <button class="btn-delicado btn-adicionar-foto" onclick="document.getElementById('input-fotos-album').click()">
+            📸 + Adicionar Fotos
+          </button>
+          <input type="file" id="input-fotos-album" multiple accept="image/*" onchange="uploadFotos(event)">
+        </div>
+      </div>
+
+      <output id="upload-status" class="upload-status" aria-live="polite"></output>
+
+      <div class="painel-config-aberto">
+        <div>
+          <span class="rotulo-config">🌊 Som Ambiente:</span>
+          <select class="btn-delicado" id="select-som" onchange="alterarSomAlbum(this.value)">
+            <option value="">Silêncio 🔇</option>
+            <option value="https://cdn.pixabay.com/download/audio/2021/08/09/audio_2d1377d63a.mp3?filename=ocean-waves-1126.mp3">Ondas do Mar 🌊</option>
+            <option value="https://cdn.pixabay.com/download/audio/2022/05/16/audio_db32145b53.mp3?filename=forest-wind-and-birds-111186.mp3">Vento nas Árvores 🍃</option>
+            <option value="https://cdn.pixabay.com/download/audio/2021/09/06/audio_75658e4933.mp3?filename=gentle-rain-19614.mp3">Chuva Suave 🌧️</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="rotulo-config">🎨 Cor de Fundo:</span>
+          <input class="seletor-cor" type="color" id="cor-fundo-pasta" value="#fff0f5" onchange="alterarCorFundoAlbum(this.value)">
+        </div>
+
+        <div>
+          <span class="rotulo-config">🔤 Fonte:</span>
+          <select class="btn-delicado" id="select-fonte" onchange="alterarFonteAlbum(this.value)">
+            <option value="'Dancing Script', cursive">Dancing Script</option>
+            <option value="'Pacifico', cursive">Pacifico</option>
+            <option value="'Great Vibes', cursive">Great Vibes</option>
+            <option value="'Montserrat', sans-serif">Montserrat</option>
+            <option value="'Caveat', cursive">Caveat</option>
+            <option value="'Quicksand', sans-serif">Padrão Suave</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pinterest-grid" id="conteiner-fotos-album"></div>
+    </div>
+
+  </div>
+
+  <nav class="mobile-bottom-nav" aria-label="Navegação principal">
+    <button class="mobile-nav-button btn-aba ativa" type="button" data-aba="feed" onclick="trocarAba('feed')"><span class="mobile-nav-icon" aria-hidden="true">🏠</span><span>Feed</span></button>
+    <button class="mobile-nav-button btn-aba" type="button" data-aba="albuns" onclick="trocarAba('albuns')"><span class="mobile-nav-icon" aria-hidden="true">🖼️</span><span>Álbuns</span></button>
+    <button class="mobile-nav-button btn-aba" type="button" data-aba="perfil" onclick="trocarAba('perfil')"><span class="mobile-nav-icon" aria-hidden="true">👤</span><span>Perfil</span></button>
+  </nav>
+  <button id="botao-player-mobile" class="btn-delicado btn-mobile-player-toggle hidden" type="button" aria-label="Reproduzir áudio" aria-pressed="false" title="Reproduzir áudio" onclick="alternarPlayerMobile()">▶</button>
+
+  <script>
+    const SUPABASE_URL = 'COLE_AQUI_SUA_PROJECT_URL';
+    const SUPABASE_ANON_KEY = 'COLE_AQUI_SUA_ANON_PUBLIC_KEY';
+    const GITHUB_PAGES_URL = 'COLE_AQUI_A_URL_DO_GITHUB_PAGES';
+    const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000;
+    const supabaseUrlValida = (() => {
+      try {
+        return new URL(SUPABASE_URL).protocol === 'https:' && !SUPABASE_URL.includes('COLE_AQUI');
+      } catch (erro) {
+        return false;
+      }
+    })();
+    const supabaseConfigurado = supabaseUrlValida &&
+      SUPABASE_ANON_KEY.length > 20 &&
+      !SUPABASE_ANON_KEY.includes('COLE_AQUI');
+    const SUPABASE_SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    let supabaseClient = null;
+    let supabaseModoDemonstracao = !supabaseConfigurado;
+
+    function carregarSdkSupabase() {
+      if (window.supabase?.createClient) return Promise.resolve();
+
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        const limite = setTimeout(() => {
+          script.remove();
+          reject(new Error('Tempo limite ao carregar o SDK Supabase.'));
+        }, 5000);
+
+        script.src = SUPABASE_SDK_URL;
+        script.async = true;
+        script.onload = () => {
+          clearTimeout(limite);
+          if (window.supabase?.createClient) resolve();
+          else reject(new Error('O SDK Supabase não disponibilizou createClient.'));
+        };
+        script.onerror = () => {
+          clearTimeout(limite);
+          reject(new Error('Não foi possível carregar o SDK Supabase.'));
+        };
+        document.head.appendChild(script);
+      });
+    }
+
+    async function criarClienteSupabase() {
+      if (!supabaseConfigurado) return null;
+      try {
+        await carregarSdkSupabase();
+        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } catch (erro) {
+        return null;
+      }
+    }
+
+    function obterUrlRetornoAuth() {
+      if (/^https:\/\//i.test(GITHUB_PAGES_URL) && !GITHUB_PAGES_URL.includes('COLE_AQUI')) {
+        return GITHUB_PAGES_URL;
+      }
+      if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
+        return `${window.location.origin}${window.location.pathname}`;
+      }
+      return null;
+    }
+
+    const EMOJIS = {
+      amor: ['💖', '❤️', '💕', '💗', '💍', '👑', '🌹', '✨'],
+      rostos: ['😀', '😄', '😂', '🥹', '😍', '🥰', '😘', '🥳'],
+      natureza: ['🌊', '🌴', '🍃', '🌸', '🌻', '☀️', '🌧️', '🏖️'],
+      comida: ['☕', '🍰', '🎂', '🍕', '🍔', '🍟', '🍓', '🍒']
+    };
+
+    let usuarioComSessao = false;
+    let usuarioDaSessaoId = null;
+    let autenticado = false;
+    let modoCadastro = false;
+    let ultimaAtividade = Date.now();
+    let albumAbertoId = null;
+    let midiaPostTemp = null;
+    let postsCarregados = [];
+    let postsSalvosIds = [];
+    try {
+      const idsSalvos = JSON.parse(localStorage.getItem('posts_salvos_ids') || '[]');
+      if (Array.isArray(idsSalvos)) postsSalvosIds = idsSalvos;
+    } catch (erro) {
+      console.warn('Não foi possível ler os posts salvos.', erro);
+    }
+    let perfilAtual = { displayName: 'Nosso cantinho', username: 'nosso-cantinho', bio: '' };
+
+    let listaAlbuns = JSON.parse(localStorage.getItem('nossos_albuns')) || [
+      {
+        id: 'album-1',
+        nome: 'Nossa Praia Favorita 🌊',
+        capaUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+        iconeUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177305.png',
+        fonte: "'Dancing Script', cursive",
+        somUrl: '',
+        corFundo: '#e0f7fa',
+        fotos: []
+      }
+    ];
+
+    /* =========================================================================
+       PERSISTÊNCIA DEFINITIVA DE IMAGENS COM INDEXEDDB
+       ========================================================================= */
+    const bancoImagensNome = 'nossa-historia-imagens';
+    const bancoImagensLoja = 'imagens';
+    const prefixoImagemPersistida = 'indexeddb:';
+    const urlsTemporariasImagens = new Map();
+    let promessaBancoImagens;
+
+    function abrirBancoImagens() {
+      if (!promessaBancoImagens) {
+        promessaBancoImagens = new Promise((resolve, reject) => {
+          const requisicao = indexedDB.open(bancoImagensNome, 1);
+          requisicao.onupgradeneeded = () => {
+            requisicao.result.createObjectStore(bancoImagensLoja, { keyPath: 'id' });
+          };
+          requisicao.onsuccess = () => resolve(requisicao.result);
+          requisicao.onerror = () => reject(requisicao.error);
+        });
+      }
+      return promessaBancoImagens;
+    }
+
+    async function gravarBlobImagem(id, blob) {
+      const banco = await abrirBancoImagens();
+      return new Promise((resolve, reject) => {
+        const transacao = banco.transaction(bancoImagensLoja, 'readwrite');
+        transacao.objectStore(bancoImagensLoja).put({ id, blob });
+        transacao.oncomplete = resolve;
+        transacao.onerror = () => reject(transacao.error);
+        transacao.onabort = () => reject(transacao.error);
+      });
+    }
+
+    async function lerBlobImagem(id) {
+      const banco = await abrirBancoImagens();
+      return new Promise((resolve, reject) => {
+        const requisicao = banco.transaction(bancoImagensLoja).objectStore(bancoImagensLoja).get(id);
+        requisicao.onsuccess = () => resolve(requisicao.result?.blob || null);
+        requisicao.onerror = () => reject(requisicao.error);
+      });
+    }
+
+    async function apagarBlobImagem(id) {
+      const banco = await abrirBancoImagens();
+      return new Promise((resolve, reject) => {
+        const transacao = banco.transaction(bancoImagensLoja, 'readwrite');
+        transacao.objectStore(bancoImagensLoja).delete(id);
+        transacao.oncomplete = resolve;
+        transacao.onerror = () => reject(transacao.error);
+        transacao.onabort = () => reject(transacao.error);
+      });
+    }
+
+    function safeCreateObjectURL(file) {
+      try {
+        return URL.createObjectURL(file);
+      } catch (erro) {
+        console.warn('Não foi possível criar URL para a imagem.', erro);
+        return '';
+      }
+    }
+
+    function safeRevokeObjectURL(url) {
+      if (typeof url === 'string' && url.startsWith('blob:')) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch (erro) {
+          console.warn('Não foi possível liberar a URL temporária.', erro);
+        }
+      }
+    }
+
+    const MediaService = {
+      comprimirImagem(arquivo, larguraMax = 1200, qualidade = 0.82, onProgress = null) {
+        return new Promise((resolve, reject) => {
+          const imagem = new Image();
+          const url = safeCreateObjectURL(arquivo);
+          if (!url) {
+            reject(new Error('Não foi possível abrir a imagem.'));
+            return;
+          }
+
+          const liberarUrl = () => safeRevokeObjectURL(url);
+          const informarProgresso = valor => {
+            if (typeof onProgress !== 'function') return;
+            try { onProgress(valor); } catch (erro) { console.warn('Falha ao atualizar progresso da imagem.', erro); }
+          };
+
+          informarProgresso(20);
+          imagem.onerror = () => {
+            liberarUrl();
+            reject(new Error('O arquivo não pôde ser decodificado como imagem.'));
+          };
+          imagem.onload = () => {
+            try {
+              const escala = Math.min(1, larguraMax / Math.max(imagem.naturalWidth, imagem.naturalHeight));
+              const largura = Math.max(1, Math.round(imagem.naturalWidth * escala));
+              const altura = Math.max(1, Math.round(imagem.naturalHeight * escala));
+              const canvas = document.createElement('canvas');
+              canvas.width = largura;
+              canvas.height = altura;
+              const contexto = canvas.getContext('2d');
+              if (!contexto) throw new Error('Canvas 2D indisponível.');
+              contexto.fillStyle = '#fff';
+              contexto.fillRect(0, 0, largura, altura);
+              contexto.drawImage(imagem, 0, 0, largura, altura);
+              informarProgresso(60);
+              canvas.toBlob(blob => {
+                liberarUrl();
+                if (!blob) {
+                  reject(new Error('A compressão da imagem falhou.'));
+                  return;
+                }
+                informarProgresso(100);
+                resolve(blob);
+              }, 'image/jpeg', qualidade);
+            } catch (erro) {
+              liberarUrl();
+              reject(erro);
+            }
+          };
+          imagem.src = url;
+        });
+      },
+
+      gerarThumbnail(arquivoBlob, dimensao = 200) {
+        return this.comprimirImagem(arquivoBlob, dimensao, 0.7);
+      }
+    };
+
+    function novoIdImagem() {
+      return `imagem-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
+
+    async function restaurarReferenciaImagem(referencia, alternativa = '') {
+      if (typeof referencia !== 'string') return alternativa;
+
+      if (referencia.startsWith('data:')) {
+        try {
+          const blob = await fetch(referencia).then(r => r.blob());
+          const id = novoIdImagem();
+          await gravarBlobImagem(id, blob);
+          const url = safeCreateObjectURL(blob);
+          if (!url) return referencia;
+          urlsTemporariasImagens.set(id, url);
+          referencia = prefixoImagemPersistida + id;
+        } catch (erro) {
+          return referencia;
+        }
+      }
+
+      if (referencia.startsWith(prefixoImagemPersistida)) {
+        const id = referencia.slice(prefixoImagemPersistida.length);
+        if (urlsTemporariasImagens.has(id)) return referencia;
+        try {
+          const blob = await lerBlobImagem(id);
+          if (!blob) return alternativa;
+          const url = safeCreateObjectURL(blob);
+          if (!url) return alternativa;
+          urlsTemporariasImagens.set(id, url);
+          return referencia;
+        } catch (erro) {
+          return alternativa;
+        }
+      }
+
+      return referencia.startsWith('blob:') ? alternativa : referencia;
+    }
+
+    async function prepararImagensPersistidas() {
+      for (const album of listaAlbuns) {
+        album.capaUrl = await restaurarReferenciaImagem(
+          album.capaUrl,
+          'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80'
+        );
+        album.iconeUrl = await restaurarReferenciaImagem(
+          album.iconeUrl,
+          'https://cdn-icons-png.flaticon.com/512/3177/3177305.png'
+        );
+        for (const foto of album.fotos || []) {
+          foto.fotoUrl = await restaurarReferenciaImagem(foto.fotoUrl);
+          if (foto.thumbnailUrl) {
+            foto.thumbnailUrl = await restaurarReferenciaImagem(foto.thumbnailUrl, foto.fotoUrl);
+          }
+        }
+      }
+      salvarTudo();
+    }
+
+    function urlImagem(referencia) {
+      if (typeof referencia === 'string' && referencia.startsWith(prefixoImagemPersistida)) {
+        return urlsTemporariasImagens.get(referencia.slice(prefixoImagemPersistida.length)) || '';
+      }
+      return typeof referencia === 'string' && !referencia.startsWith('blob:') ? referencia : '';
+    }
+
+    async function excluirImagemPersistida(referencia) {
+      if (typeof referencia !== 'string' || !referencia.startsWith(prefixoImagemPersistida)) return;
+      const id = referencia.slice(prefixoImagemPersistida.length);
+      safeRevokeObjectURL(urlsTemporariasImagens.get(id));
+      urlsTemporariasImagens.delete(id);
+      await apagarBlobImagem(id);
+    }
+
+    function salvarTudo() {
+      try {
+        localStorage.setItem('nossos_albuns', JSON.stringify(listaAlbuns));
+        return true;
+      } catch (e) {
+        console.warn("Armazenamento local cheio", e);
+        return false;
+      }
+    }
+
+    const FeedRepository = {
+      limitePorPagina: 5,
+      cursorAtual: null,
+      temMais: true,
+
+      listarPosts(cursor = null) {
+        let todos = [];
+        try {
+          const salvos = JSON.parse(localStorage.getItem('social_v3_posts') || '[]');
+          if (Array.isArray(salvos)) todos = salvos;
+        } catch (erro) {
+          console.warn('Não foi possível ler o feed local.', erro);
+        }
+        todos.sort((a, b) => Number(b.id) - Number(a.id));
+
+        const indiceCursor = cursor ? todos.findIndex(post => post.id === cursor) : -1;
+        const inicio = indiceCursor < 0 ? 0 : indiceCursor + 1;
+        const pagina = todos.slice(inicio, inicio + this.limitePorPagina);
+        this.cursorAtual = pagina.length ? pagina[pagina.length - 1].id : null;
+        this.temMais = inicio + pagina.length < todos.length;
+        return pagina;
+      },
+
+      salvarPost(novoPost) {
+        if (!novoPost || typeof novoPost !== 'object') return null;
+        try {
+          const salvos = JSON.parse(localStorage.getItem('social_v3_posts') || '[]');
+          const todos = Array.isArray(salvos) ? salvos : [];
+          if (novoPost.id != null && todos.some(post => post.id === novoPost.id)) return novoPost;
+          todos.unshift(novoPost);
+          localStorage.setItem('social_v3_posts', JSON.stringify(todos));
+          return novoPost;
+        } catch (erro) {
+          console.warn('Não foi possível salvar o post no feed local.', erro);
+          return null;
+        }
+      },
+
+      atualizarPost(id, alteracoes) {
+        try {
+          const salvos = JSON.parse(localStorage.getItem('social_v3_posts') || '[]');
+          const todos = Array.isArray(salvos) ? salvos : [];
+          const indice = todos.findIndex(post => post.id === id);
+          if (indice < 0) return null;
+          todos[indice] = { ...todos[indice], ...alteracoes };
+          localStorage.setItem('social_v3_posts', JSON.stringify(todos));
+          return todos[indice];
+        } catch (erro) {
+          console.warn('Não foi possível atualizar o post local.', erro);
+          return null;
+        }
+      },
+
+      excluirPost(id) {
+        try {
+          const salvos = JSON.parse(localStorage.getItem('social_v3_posts') || '[]');
+          const todos = Array.isArray(salvos) ? salvos : [];
+          const restantes = todos.filter(post => post.id !== id);
+          if (restantes.length === todos.length) return false;
+          localStorage.setItem('social_v3_posts', JSON.stringify(restantes));
+          return true;
+        } catch (erro) {
+          console.warn('Não foi possível excluir o post local.', erro);
+          return false;
+        }
+      }
+    };
+
+    const RealtimeService = {
+      canal: null,
+
+      conectar(onNovoEvento = () => {}) {
+        if (supabaseModoDemonstracao || !supabaseClient?.channel) return false;
+        if (this.canal) return true;
+
+        const receber = tipo => ({ payload }) => {
+          if (tipo === 'post') FeedRepository.salvarPost(payload);
+          window.dispatchEvent(new CustomEvent('nossa-historia:feed', { detail: { tipo, payload } }));
+          onNovoEvento(tipo, payload);
+        };
+
+        this.canal = supabaseClient
+          .channel('casal-realtime')
+          .on('broadcast', { event: 'feed:novo_post' }, receber('post'))
+          .on('broadcast', { event: 'feed:reacao' }, receber('reacao'))
+          .on('broadcast', { event: 'feed:comentario' }, receber('comentario'))
+          .on('broadcast', { event: 'feed:excluir_post' }, receber('excluir_post'))
+          .subscribe(status => {
+            if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+              console.warn('Canal realtime indisponível:', status);
+            }
+          });
+        return true;
+      },
+
+      emitir(evento, payload) {
+        if (!this.canal) return Promise.resolve(false);
+        return this.canal.send({ type: 'broadcast', event: evento, payload });
+      },
+
+      desconectar() {
+        if (!this.canal || !supabaseClient) return Promise.resolve();
+        const canal = this.canal;
+        this.canal = null;
+        return supabaseClient.removeChannel(canal);
+      }
+    };
+
+    function definirStatusFeed(mensagem) {
+      document.getElementById('status-post-feed').textContent = mensagem;
+    }
+
+    function lerDataLocalISO(valor) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(valor || '')) return null;
+      const [ano, mes, dia] = valor.split('-').map(Number);
+      const data = new Date(ano, mes - 1, dia);
+      if (data.getFullYear() !== ano || data.getMonth() !== mes - 1 || data.getDate() !== dia) return null;
+      return data;
+    }
+
+    const ProfileService = {
+      chaveArmazenamento() {
+        return `nossa-historia-perfil:${usuarioDaSessaoId || 'demo'}`;
+      },
+
+      obterPerfilAtual(metadata = {}) {
+        let salvo = {};
+        try {
+          salvo = JSON.parse(localStorage.getItem(this.chaveArmazenamento()) || '{}') || {};
+        } catch (erro) {
+          console.warn('Não foi possível ler o perfil local.', erro);
+        }
+        return {
+          displayName: String(metadata.display_name || salvo.displayName || 'Nosso cantinho'),
+          username: String(metadata.username || salvo.username || 'nosso-cantinho'),
+          bio: String(metadata.bio || salvo.bio || ''),
+          relationshipStart: String(metadata.relationship_start || salvo.relationshipStart || '')
+        };
+      },
+
+      async salvarPerfil(perfil) {
+        const perfilLimpo = {
+          displayName: String(perfil.displayName || '').trim().slice(0, 60),
+          username: String(perfil.username || '').trim().replace(/^@/, '').toLowerCase(),
+          bio: String(perfil.bio || '').trim().slice(0, 160),
+          relationshipStart: String(perfil.relationshipStart || '')
+        };
+        if (!perfilLimpo.displayName || !/^[a-z0-9._]{3,24}$/.test(perfilLimpo.username)) {
+          return { salvo: false, motivo: 'invalid' };
+        }
+        const dataInicio = perfilLimpo.relationshipStart ? lerDataLocalISO(perfilLimpo.relationshipStart) : null;
+        if (perfilLimpo.relationshipStart && (!dataInicio || dataInicio > new Date())) {
+          return { salvo: false, motivo: 'invalid-date' };
+        }
+
+        if (!supabaseModoDemonstracao && supabaseClient) {
+          const { error } = await supabaseClient.auth.updateUser({
+            data: {
+              display_name: perfilLimpo.displayName,
+              username: perfilLimpo.username,
+              bio: perfilLimpo.bio,
+              relationship_start: perfilLimpo.relationshipStart
+            }
+          });
+          if (error) return { salvo: false, motivo: 'cloud' };
+        }
+
+        try {
+          localStorage.setItem(this.chaveArmazenamento(), JSON.stringify(perfilLimpo));
+        } catch (erro) {
+          console.warn('Não foi possível salvar o perfil local.', erro);
+          return { salvo: false, motivo: 'storage' };
+        }
+
+        perfilAtual = perfilLimpo;
+        atualizarResumoPerfil();
+        return { salvo: true, perfil: perfilLimpo };
+      },
+
+      podeModificarRecurso(autor) {
+        if (!autor) return false;
+        const dono = String(autor).trim();
+        if (usuarioDaSessaoId) return dono === usuarioDaSessaoId;
+        if (!supabaseModoDemonstracao) return false;
+        const valor = dono.toLowerCase();
+        return [
+          'demo',
+          `@${perfilAtual.username}`.toLowerCase(),
+          perfilAtual.displayName.toLowerCase(),
+          'nosso cantinho'
+        ].includes(valor);
+      }
+    };
+
+    function carregarPerfilAtual(usuario = null) {
+      perfilAtual = ProfileService.obterPerfilAtual(usuario?.user_metadata || {});
+      atualizarResumoPerfil();
+    }
+
+    function atualizarResumoPerfil() {
+      const resumo = document.getElementById('perfil-resumo');
+      const nome = document.getElementById('perfil-widget-nome');
+      if (nome) nome.textContent = perfilAtual.displayName;
+      if (resumo) resumo.textContent = `@${perfilAtual.username} · ${perfilAtual.displayName}${perfilAtual.bio ? ` — ${perfilAtual.bio}` : ''}`;
+      atualizarContadorTempoJuntos();
+    }
+
+    function criarDataAniversario(ano, mes, dia) {
+      const ultimoDiaMes = new Date(ano, mes + 1, 0).getDate();
+      return new Date(ano, mes, Math.min(dia, ultimoDiaMes));
+    }
+
+    function atualizarContadorTempoJuntos() {
+      const contador = document.getElementById('contador-tempo-juntos');
+      const proximaData = document.getElementById('proxima-data-relacionamento');
+      if (!contador || !proximaData) return;
+      const inicio = lerDataLocalISO(perfilAtual.relationshipStart);
+      if (!inicio) {
+        contador.textContent = 'Defina a data de início do namoro';
+        proximaData.textContent = 'Aniversário de Namoro';
+        return;
+      }
+
+      const agora = new Date();
+      if (inicio > agora) {
+        contador.textContent = 'A data de início ainda não chegou';
+        proximaData.textContent = 'Aniversário de Namoro';
+        return;
+      }
+
+      const segundosTotais = Math.floor((agora.getTime() - inicio.getTime()) / 1000);
+      const dias = Math.floor(segundosTotais / 86400);
+      const horas = Math.floor((segundosTotais % 86400) / 3600);
+      const minutos = Math.floor((segundosTotais % 3600) / 60);
+      const segundos = segundosTotais % 60;
+      contador.textContent = `${dias} dias · ${String(horas).padStart(2, '0')}h ${String(minutos).padStart(2, '0')}m ${String(segundos).padStart(2, '0')}s`;
+
+      let proximo = criarDataAniversario(agora.getFullYear(), inicio.getMonth(), inicio.getDate());
+      if (proximo <= agora) proximo = criarDataAniversario(agora.getFullYear() + 1, inicio.getMonth(), inicio.getDate());
+      proximaData.textContent = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(proximo);
+    }
+
+    function abrirConfigPerfil() {
+      if (!exigirLogin()) return;
+      const perfil = ProfileService.obterPerfilAtual();
+      document.getElementById('perfil-displayname').value = perfil.displayName;
+      document.getElementById('perfil-username').value = `@${perfil.username}`;
+      document.getElementById('perfil-bio').value = perfil.bio;
+      const campoData = document.getElementById('perfil-data-inicio');
+      campoData.value = perfil.relationshipStart;
+      const hoje = new Date();
+      campoData.max = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+      document.getElementById('status-perfil').textContent = '';
+      document.getElementById('modal-perfil').classList.remove('hidden');
+      setTimeout(() => document.getElementById('perfil-displayname').focus(), 30);
+    }
+
+    function fecharModalPerfil() {
+      document.getElementById('modal-perfil').classList.add('hidden');
+    }
+
+    async function salvarConfigPerfilModal(evento) {
+      evento?.preventDefault();
+      if (!exigirLogin()) return;
+
+      const status = document.getElementById('status-perfil');
+      const perfil = ProfileService.obterPerfilAtual();
+      perfil.displayName = document.getElementById('perfil-displayname').value.trim();
+      perfil.username = document.getElementById('perfil-username').value.trim();
+      perfil.bio = document.getElementById('perfil-bio').value.trim();
+      perfil.relationshipStart = document.getElementById('perfil-data-inicio').value;
+      const botao = document.querySelector('#form-perfil [type="submit"]');
+      botao.disabled = true;
+      status.textContent = 'Salvando perfil...';
+      try {
+        const resultado = await ProfileService.salvarPerfil(perfil);
+        if (!resultado.salvo) {
+          status.textContent = resultado.motivo === 'invalid'
+            ? 'Informe um nome e um username válido (3 a 24 letras, números, ponto ou _).'
+            : resultado.motivo === 'invalid-date'
+              ? 'Informe uma data de início válida que não esteja no futuro.'
+              : resultado.motivo === 'cloud'
+                ? 'Não foi possível sincronizar o perfil com a nuvem.'
+                : 'Não foi possível salvar o perfil neste navegador.';
+          return;
+        }
+        fecharModalPerfil();
+        renderizarFeedPaginado();
+        definirStatusFeed('Perfil salvo.');
+      } catch (erro) {
+        status.textContent = 'Não foi possível salvar o perfil neste navegador.';
+      } finally {
+        botao.disabled = false;
+      }
+    }
+
+    function limparMidiaPost() {
+      if (midiaPostTemp?.url) safeRevokeObjectURL(midiaPostTemp.url);
+      midiaPostTemp = null;
+      document.getElementById('input-midia-post').value = '';
+      document.getElementById('preview-img-post').removeAttribute('src');
+      document.getElementById('preview-midia-container').classList.add('hidden');
+      document.getElementById('remover-midia-post').classList.add('hidden');
+      document.getElementById('barra-progresso-upload').classList.add('hidden');
+    }
+
+    async function carregarMidiaPost(evento) {
+      if (!exigirLogin()) return;
+      const arquivo = evento.target.files?.[0];
+      const progresso = document.getElementById('barra-progresso-upload');
+      if (!arquivo) return;
+      if (!arquivo.type.startsWith('image/')) {
+        definirStatusFeed('Escolha um arquivo de imagem.');
+        evento.target.value = '';
+        return;
+      }
+      if (arquivo.size > 15 * 1024 * 1024) {
+        definirStatusFeed('A imagem deve ter até 15 MB antes da compressão.');
+        evento.target.value = '';
+        return;
+      }
+
+      limparMidiaPost();
+      progresso.value = 0;
+      progresso.classList.remove('hidden');
+      definirStatusFeed('Otimizando imagem...');
+      try {
+        const blob = await MediaService.comprimirImagem(arquivo, 1200, 0.8, percentual => {
+          progresso.value = percentual;
+        });
+        const url = safeCreateObjectURL(blob);
+        if (!url) throw new Error('Não foi possível criar a prévia.');
+        midiaPostTemp = { blob, url };
+        document.getElementById('preview-img-post').src = url;
+        document.getElementById('preview-midia-container').classList.remove('hidden');
+        document.getElementById('remover-midia-post').classList.remove('hidden');
+        definirStatusFeed('Imagem pronta para publicar.');
+      } catch (erro) {
+        definirStatusFeed('Não foi possível otimizar essa imagem.');
+      } finally {
+        progresso.classList.add('hidden');
+        evento.target.value = '';
+      }
+    }
+
+    async function publicarPost(evento) {
+      evento.preventDefault();
+      if (!exigirLogin()) return;
+      const texto = document.getElementById('texto-post').value.trim();
+      if (!texto && !midiaPostTemp) {
+        definirStatusFeed('Escreva uma memória ou adicione uma foto antes de publicar.');
+        return;
+      }
+
+      const botao = document.getElementById('botao-publicar-post');
+      botao.disabled = true;
+      definirStatusFeed('Publicando...');
+      let referenciaMidia = '';
+      let urlMidia = '';
+      try {
+        if (midiaPostTemp) {
+          const idImagem = novoIdImagem();
+          referenciaMidia = prefixoImagemPersistida + idImagem;
+          urlMidia = safeCreateObjectURL(midiaPostTemp.blob);
+          if (!urlMidia) throw new Error('Não foi possível preparar a imagem.');
+          await gravarBlobImagem(idImagem, midiaPostTemp.blob);
+          urlsTemporariasImagens.set(idImagem, urlMidia);
+        }
+
+        const novoPost = {
+          id: Date.now() + Math.random(),
+          autorId: usuarioDaSessaoId || 'demo',
+          autorHandle: `@${perfilAtual.username}`,
+          data: new Date().toLocaleString('pt-BR'),
+          texto,
+          midia: referenciaMidia,
+          curtidas: 0,
+          curtidoPorMim: false,
+          comentarios: []
+        };
+        if (!FeedRepository.salvarPost(novoPost)) throw new Error('Não foi possível salvar o post.');
+
+        postsCarregados = FeedRepository.listarPosts(null);
+        await prepararMidiasFeed(postsCarregados);
+        renderizarFeedPaginado();
+        document.getElementById('form-post-feed').reset();
+        limparMidiaPost();
+        definirStatusFeed('Memória publicada.');
+        if (!supabaseModoDemonstracao) {
+          RealtimeService.emitir('feed:novo_post', { ...novoPost, midia: '' });
+        }
+      } catch (erro) {
+        if (referenciaMidia) await excluirImagemPersistida(referenciaMidia).catch(() => {});
+        else safeRevokeObjectURL(urlMidia);
+        definirStatusFeed('Não foi possível publicar essa memória.');
+      } finally {
+        botao.disabled = false;
+      }
+    }
+
+    async function prepararMidiasFeed(posts) {
+      await Promise.all(posts.map(async post => {
+        if (typeof post.midia === 'string' && post.midia) {
+          post.midia = await restaurarReferenciaImagem(post.midia);
+        }
+      }));
+    }
+
+    async function carregarFeedInicial() {
+      postsCarregados = FeedRepository.listarPosts(null);
+      await prepararMidiasFeed(postsCarregados);
+      renderizarFeedPaginado();
+    }
+
+    async function carregarMaisPosts() {
+      if (!FeedRepository.temMais) return;
+      const proximos = FeedRepository.listarPosts(FeedRepository.cursorAtual);
+      await prepararMidiasFeed(proximos);
+      postsCarregados.push(...proximos);
+      renderizarFeedPaginado();
+    }
+
+    function criarNo(tag, classe, texto) {
+      const elemento = document.createElement(tag);
+      if (classe) elemento.className = classe;
+      if (texto != null) elemento.textContent = texto;
+      return elemento;
+    }
+
+    function criarCartaoPost(post) {
+      const cartao = criarNo('article', 'post-card');
+      cartao.dataset.postId = String(post.id);
+
+      const cabecalho = criarNo('div', 'post-header');
+      const autor = criarNo('div', 'post-author');
+      autor.append(criarNo('span', 'post-avatar', '🌸'));
+      const autorDetalhes = document.createElement('div');
+      autorDetalhes.append(criarNo('strong', '', post.autorHandle || 'Nosso cantinho'));
+      autorDetalhes.append(criarNo('div', 'post-date', post.data || ''));
+      autor.append(autorDetalhes);
+      cabecalho.append(autor);
+      if (ProfileService.podeModificarRecurso(post.autorId || post.autorHandle)) {
+        const excluir = criarNo('button', 'btn-delicado btn-apagar post-delete', 'Excluir');
+        excluir.type = 'button';
+        excluir.addEventListener('click', () => excluirPost(post.id));
+        cabecalho.append(excluir);
+      }
+      cartao.append(cabecalho);
+
+      if (post.texto) cartao.append(criarNo('p', 'post-copy', post.texto));
+      const urlMidia = typeof post.midia === 'string' ? urlImagem(post.midia) : '';
+      if (urlMidia && /^(blob:|data:image\/|https?:\/\/)/i.test(urlMidia)) {
+        const imagem = criarNo('img', 'post-media');
+        imagem.src = urlMidia;
+        imagem.loading = 'lazy';
+        imagem.decoding = 'async';
+        imagem.alt = 'Foto da memória';
+        cartao.append(imagem);
+      }
+
+      const acoes = criarNo('div', 'post-actions');
+      const curtir = criarNo('button', `btn-delicado${post.curtidoPorMim ? ' curtido' : ''}`, `${post.curtidoPorMim ? '❤️' : '🤍'} ${Number(post.curtidas) || 0} Curtidas`);
+      curtir.type = 'button';
+      curtir.addEventListener('click', () => alternarCurtidaPost(post.id));
+      const contagemComentarios = criarNo('span', '', `💬 ${(Array.isArray(post.comentarios) ? post.comentarios : []).length} Comentários`);
+      const salvo = postsSalvosIds.some(id => String(id) === String(post.id));
+      const salvar = criarNo('button', `btn-delicado${salvo ? ' post-salvo' : ''}`, salvo ? '🔖 Salvo' : '📑 Salvar');
+      salvar.type = 'button';
+      salvar.setAttribute('aria-pressed', String(salvo));
+      salvar.addEventListener('click', () => alternarSalvarPost(post.id));
+      acoes.append(curtir, contagemComentarios, salvar);
+      cartao.append(acoes);
+
+      const comentarios = criarNo('div', 'post-comments');
+      for (const comentario of Array.isArray(post.comentarios) ? post.comentarios : []) {
+        const linha = criarNo('div', 'post-comment');
+        linha.append(criarNo('strong', '', `${comentario.autor || 'Você'}: `));
+        linha.append(document.createTextNode(comentario.texto || ''));
+        comentarios.append(linha);
+      }
+
+      const formulario = criarNo('form', 'post-comment-form');
+      formulario.addEventListener('submit', evento => adicionarComentario(post.id, evento));
+      const entrada = criarNo('input', 'campo-texto');
+      entrada.type = 'text';
+      entrada.maxLength = 500;
+      entrada.placeholder = 'Comentar...';
+      entrada.setAttribute('aria-label', 'Escreva um comentário');
+      entrada.dataset.commentFor = String(post.id);
+      const enviar = criarNo('button', 'btn-delicado', 'Enviar');
+      enviar.type = 'submit';
+      formulario.append(entrada, enviar);
+      comentarios.append(formulario);
+      cartao.append(comentarios);
+      return cartao;
+    }
+
+    function renderizarFeedPaginado() {
+      const container = document.getElementById('lista-posts-feed');
+      container.replaceChildren();
+      container.setAttribute('aria-busy', 'false');
+      if (!postsCarregados.length) {
+        const vazio = criarNo('div', 'feed-empty-state');
+        vazio.append(criarNo('strong', '', 'Ainda não há memórias na timeline.'));
+        vazio.append(criarNo('p', '', 'Compartilhe uma foto ou uma lembrança para começar.'));
+        container.append(vazio);
+      } else {
+        for (const post of postsCarregados) container.append(criarCartaoPost(post));
+      }
+
+      if (FeedRepository.temMais) {
+        const carregarMais = criarNo('button', 'btn-delicado feed-more', 'Carregar mais memórias');
+        carregarMais.type = 'button';
+        carregarMais.addEventListener('click', carregarMaisPosts);
+        container.append(carregarMais);
+      }
+    }
+
+    function trocarAba(aba) {
+      const destinos = { feed: 'titulo-feed', albuns: 'grid-albuns' };
+      document.querySelectorAll('.mobile-bottom-nav .btn-aba').forEach(botao => {
+        const ativo = botao.dataset.aba === aba;
+        botao.classList.toggle('ativa', ativo);
+        if (ativo) botao.setAttribute('aria-current', 'page');
+        else botao.removeAttribute('aria-current');
+      });
+
+      if (aba === 'perfil') {
+        abrirConfigPerfil();
+        return;
+      }
+      const destino = document.getElementById(destinos[aba]);
+      if (!destino) return;
+      if (document.getElementById('tela-album').classList.contains('ativa')) voltarParaHome();
+      requestAnimationFrame(() => destino.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+
+    function atualizarControlePlayerMobile() {
+      const botao = document.getElementById('botao-player-mobile');
+      const player = document.getElementById('player-audio');
+      const disponivel = Boolean(player.currentSrc || player.getAttribute('src'));
+      const tocando = disponivel && !player.paused && !player.ended;
+      botao.classList.toggle('hidden', !disponivel);
+      botao.textContent = tocando ? '⏸' : '▶';
+      botao.title = tocando ? 'Pausar áudio' : 'Reproduzir áudio';
+      botao.setAttribute('aria-label', botao.title);
+      botao.setAttribute('aria-pressed', String(tocando));
+    }
+
+    async function alternarPlayerMobile() {
+      const player = document.getElementById('player-audio');
+      if (!player.currentSrc && !player.getAttribute('src')) return;
+      if (player.paused || player.ended) {
+        try {
+          await player.play();
+        } catch (erro) {
+          definirStatusFeed('O áudio não pôde ser iniciado neste momento.');
+        }
+      } else {
+        player.pause();
+      }
+      atualizarControlePlayerMobile();
+    }
+
+    function localizarPost(id) {
+      return postsCarregados.find(post => post.id === id);
+    }
+
+    function alternarSalvarPost(id) {
+      if (!exigirLogin()) return;
+      const estavaSalvo = postsSalvosIds.some(item => String(item) === String(id));
+      const original = postsSalvosIds;
+      postsSalvosIds = estavaSalvo
+        ? postsSalvosIds.filter(item => String(item) !== String(id))
+        : [...postsSalvosIds, id];
+      try {
+        localStorage.setItem('posts_salvos_ids', JSON.stringify(postsSalvosIds));
+      } catch (erro) {
+        postsSalvosIds = original;
+        definirStatusFeed('Não foi possível salvar este marcador neste navegador.');
+        return;
+      }
+      renderizarFeedPaginado();
+    }
+
+    function alternarCurtidaPost(id) {
+      if (!exigirLogin()) return;
+      const post = localizarPost(id);
+      if (!post) return;
+      post.curtidoPorMim = !post.curtidoPorMim;
+      post.curtidas = Math.max(0, (Number(post.curtidas) || 0) + (post.curtidoPorMim ? 1 : -1));
+      FeedRepository.atualizarPost(id, { curtidoPorMim: post.curtidoPorMim, curtidas: post.curtidas });
+      renderizarFeedPaginado();
+      if (!supabaseModoDemonstracao) RealtimeService.emitir('feed:reacao', { id, curtidas: post.curtidas, curtidoPorMim: post.curtidoPorMim });
+    }
+
+    async function excluirPost(id) {
+      if (!exigirLogin()) return;
+      const post = localizarPost(id);
+      if (!post || !ProfileService.podeModificarRecurso(post.autorId || post.autorHandle)) return;
+      if (!confirm('Deseja excluir esta publicação?')) return;
+      if (!FeedRepository.excluirPost(id)) {
+        definirStatusFeed('Não foi possível excluir a publicação.');
+        return;
+      }
+
+      postsCarregados = postsCarregados.filter(item => item.id !== id);
+      if (post.midia) await excluirImagemPersistida(post.midia).catch(() => {});
+      renderizarFeedPaginado();
+      if (!supabaseModoDemonstracao) RealtimeService.emitir('feed:excluir_post', { id });
+    }
+
+    function adicionarComentario(id, evento) {
+      evento.preventDefault();
+      if (!exigirLogin()) return;
+      const entrada = evento.currentTarget.querySelector('input');
+      const texto = entrada.value.trim();
+      const post = localizarPost(id);
+      if (!post || !texto) return;
+
+      const comentario = { autor: `@${perfilAtual.username}`, texto, data: new Date().toISOString() };
+      post.comentarios = Array.isArray(post.comentarios) ? post.comentarios : [];
+      post.comentarios.push(comentario);
+      FeedRepository.atualizarPost(id, { comentarios: post.comentarios });
+      renderizarFeedPaginado();
+      if (!supabaseModoDemonstracao) RealtimeService.emitir('feed:comentario', { id, comentario });
+    }
+
+    function processarEventoFeedRealtime(tipo, payload) {
+      if (!payload) return;
+      if (tipo === 'excluir_post') {
+        const post = localizarPost(payload.id);
+        if (post?.midia) excluirImagemPersistida(post.midia).catch(() => {});
+        postsCarregados = postsCarregados.filter(item => item.id !== payload.id);
+        FeedRepository.excluirPost(payload.id);
+        renderizarFeedPaginado();
+      } else if (tipo === 'post') {
+        if (postsCarregados.some(post => post.id === payload.id)) return;
+        postsCarregados.unshift(payload);
+        prepararMidiasFeed([payload]).then(renderizarFeedPaginado);
+      } else if (tipo === 'reacao') {
+        const post = localizarPost(payload.id);
+        if (!post) return;
+        post.curtidas = Number(payload.curtidas) || 0;
+        post.curtidoPorMim = Boolean(payload.curtidoPorMim);
+        FeedRepository.atualizarPost(post.id, { curtidas: post.curtidas, curtidoPorMim: post.curtidoPorMim });
+        renderizarFeedPaginado();
+      } else if (tipo === 'comentario') {
+        const post = localizarPost(payload.id);
+        if (!post || !payload.comentario) return;
+        post.comentarios = Array.isArray(post.comentarios) ? post.comentarios : [];
+        post.comentarios.push(payload.comentario);
+        FeedRepository.atualizarPost(post.id, { comentarios: post.comentarios });
+        renderizarFeedPaginado();
+      }
+    }
+
+    window.addEventListener('nossa-historia:feed', evento => {
+      processarEventoFeedRealtime(evento.detail?.tipo, evento.detail?.payload);
+    });
+
+    /* =========================================================================
+       INTERFACE E NAVEGAÇÃO DA VITRINE (HOME)
+       ========================================================================= */
+    function atualizarEstadoAuth(session) {
+      const usuarioId = session?.user?.id || null;
+      usuarioComSessao = Boolean(usuarioId);
+      usuarioDaSessaoId = usuarioId;
+      autenticado = usuarioComSessao;
+      if (autenticado) ultimaAtividade = Date.now();
+      carregarPerfilAtual(session?.user || null);
+      atualizarEstadoBotaoAuth();
+    }
+
+    function atualizarEstadoBotaoAuth() {
+      const loginBtn = document.getElementById('botao-login');
+      const logoutBtn = document.getElementById('botao-logout');
+      if (supabaseModoDemonstracao) {
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+        return;
+      }
+      if (usuarioComSessao) {
+        loginBtn.classList.add('hidden');
+        logoutBtn.style.display = 'inline-flex';
+      } else {
+        loginBtn.classList.remove('hidden');
+        logoutBtn.style.display = 'none';
+      }
+    }
+
+    function mostrarModalLogin() {
+      if (supabaseModoDemonstracao) return;
+      document.getElementById('auth-modal').style.display = 'flex';
+      setTimeout(() => document.getElementById('login-email').focus(), 50);
+    }
+
+    function esconderModalLogin() {
+      document.getElementById('auth-modal').style.display = 'none';
+    }
+
+    function definirStatusAuth(mensagem) {
+      document.getElementById('auth-status').textContent = mensagem;
+    }
+
+    function exibirOpcoesLogin() {
+      definirModoCadastro(false);
+      document.getElementById('login-options').classList.remove('hidden');
+      definirStatusAuth('');
+    }
+
+    function definirModoCadastro(ativo) {
+      modoCadastro = ativo;
+      document.getElementById('botao-enviar-login').textContent = ativo ? 'Criar conta' : 'Entrar';
+      document.getElementById('botao-alternar-cadastro').textContent = ativo ? 'Já tenho uma conta' : 'Criar conta';
+      document.getElementById('login-senha').autocomplete = ativo ? 'new-password' : 'current-password';
+      document.getElementById('botao-reenviar-confirmacao').classList.add('hidden');
+    }
+
+    function alternarModoCadastro() {
+      definirModoCadastro(!modoCadastro);
+      definirStatusAuth('');
+    }
+
+    async function validarLogin(evento) {
+      evento.preventDefault();
+      const status = document.getElementById('auth-status');
+      const botao = document.getElementById('botao-enviar-login');
+      if (!supabaseClient) {
+        status.textContent = 'Preencha SUPABASE_URL e SUPABASE_ANON_KEY com os valores do projeto Supabase.';
+        return;
+      }
+
+      botao.disabled = true;
+      status.textContent = modoCadastro ? 'Criando conta...' : 'Entrando...';
+      document.getElementById('botao-reenviar-confirmacao').classList.add('hidden');
+      try {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-senha').value;
+
+        if (modoCadastro) {
+          const redirectTo = obterUrlRetornoAuth();
+          const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: redirectTo ? { emailRedirectTo: redirectTo } : undefined
+          });
+          if (error) {
+            status.textContent = 'Não foi possível criar a conta. Confira o e-mail e tente outra senha.';
+            return;
+          }
+
+          document.getElementById('login-form').reset();
+          if (!data.session) {
+            definirModoCadastro(false);
+            status.textContent = 'Conta criada. Confirme o e-mail enviado antes de entrar.';
+            return;
+          }
+
+          if (data.session) {
+            atualizarEstadoAuth(data.session);
+            definirModoCadastro(false);
+            esconderModalLogin();
+            renderizarHome();
+          }
+          return;
+        }
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+        if (error) {
+          if (error.code === 'email_not_confirmed') {
+            status.textContent = 'Confirme seu endereço pelo link enviado ao e-mail cadastrado.';
+            document.getElementById('botao-reenviar-confirmacao').classList.remove('hidden');
+          } else {
+            status.textContent = 'Não foi possível entrar. Confira o e-mail e a senha.';
+          }
+          return;
+        }
+
+        document.getElementById('login-form').reset();
+        definirModoCadastro(false);
+        atualizarEstadoAuth(data.session);
+        esconderModalLogin();
+        renderizarHome();
+      } catch (erro) {
+        status.textContent = 'Falha de conexão com o serviço de autenticação.';
+      } finally {
+        botao.disabled = false;
+      }
+    }
+
+    async function reenviarConfirmacaoEmail() {
+      const email = document.getElementById('login-email').value.trim();
+      const redirectTo = obterUrlRetornoAuth();
+      if (!email || !supabaseClient) {
+        definirStatusAuth('Informe o e-mail e configure as credenciais do Supabase.');
+        return;
+      }
+
+      definirStatusAuth('Enviando novo e-mail de confirmação...');
+      try {
+        const { error } = await supabaseClient.auth.resend({
+          type: 'signup',
+          email,
+          options: redirectTo ? { emailRedirectTo: redirectTo } : undefined
+        });
+        definirStatusAuth(error
+          ? 'Não foi possível reenviar a confirmação. Verifique o e-mail e a configuração SMTP.'
+          : 'Solicitação enviada. Confira sua caixa de entrada e spam.');
+      } catch (erro) {
+        definirStatusAuth('Falha de conexão ao reenviar a confirmação de e-mail.');
+      }
+    }
+
+    function registrarAtividadeSegura() {
+      if (!autenticado) return;
+      ultimaAtividade = Date.now();
+    }
+
+    async function logoutSeguro() {
+      if (supabaseModoDemonstracao || !supabaseClient) return;
+      if (!confirm('Deseja encerrar a sessão com segurança?')) return;
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) alert('Não foi possível encerrar a sessão. Tente novamente.');
+      else exibirOpcoesLogin();
+    }
+
+    function exigirLogin() {
+      if (!autenticado) {
+        mostrarModalLogin();
+        return false;
+      }
+      return true;
+    }
+
+    function renderizarHome() {
+      if (!autenticado) return;
+      const grid = document.getElementById('grid-albuns');
+      grid.innerHTML = '';
+      document.body.style.backgroundColor = '#fdfbfb';
+
+      listaAlbuns.forEach(album => {
+        const card = document.createElement('div');
+        card.className = 'card-galeria';
+        
+        card.innerHTML = `
+          <img src="${urlImagem(album.capaUrl)}" class="capa-album" title="Clique para trocar a capa" onclick="document.getElementById('input-capa-${album.id}').click()">
+          <input type="file" id="input-capa-${album.id}" accept="image/*" onchange="trocarImagemAlbum('${album.id}', 'capa', event)">
+          
+          <img src="${urlImagem(album.iconeUrl)}" class="icone-album" title="Clique para trocar o ícone" onclick="document.getElementById('input-icone-${album.id}').click()">
+          <input type="file" id="input-icone-${album.id}" accept="image/*" onchange="trocarImagemAlbum('${album.id}', 'icone', event)">
+          
+          <div class="info-galeria">
+            <h3 contenteditable="true" onblur="salvarNomeGaleria('${album.id}', this)">${album.nome}</h3>
+            <div class="acoes-galeria">
+              <button class="btn-delicado" onclick="abrirAlbum('${album.id}')">📖 Abrir Álbum</button>
+              <button class="btn-delicado btn-apagar" onclick="excluirAlbum('${album.id}')">Excluir</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function criarAlbum() {
+      if (!exigirLogin()) return;
+      const input = document.getElementById('novo-nome');
+      const nome = input.value.trim() || 'Novo Álbum 💖';
+      
+      listaAlbuns.push({
+        id: 'album-' + Date.now(),
+        nome: nome,
+        capaUrl: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80',
+        iconeUrl: 'https://cdn-icons-png.flaticon.com/512/3177/3177305.png',
+        fonte: "'Quicksand', sans-serif",
+        somUrl: '',
+        corFundo: '#fff0f5',
+        fotos: []
+      });
+      
+      input.value = '';
+      salvarTudo();
+      renderizarHome();
+    }
+
+    async function excluirAlbum(id) {
+      if (!exigirLogin()) return;
+      if (confirm("Deseja apagar esta pasta?")) {
+        const album = listaAlbuns.find(a => a.id === id);
+        listaAlbuns = listaAlbuns.filter(a => a.id !== id);
+        if (!salvarTudo()) {
+          listaAlbuns.push(album);
+          alert('Não foi possível atualizar os álbuns.');
+          return;
+        }
+        if (album) {
+          await Promise.all([
+            excluirImagemPersistida(album.capaUrl),
+            excluirImagemPersistida(album.iconeUrl),
+            ...(album.fotos || []).flatMap(foto => [foto.fotoUrl, foto.thumbnailUrl].map(excluirImagemPersistida))
+          ].map(p => p.catch(() => {})));
+        }
+        renderizarHome();
+      }
+    }
+
+    function salvarNomeGaleria(id, elemento) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === id);
+      if (album) {
+        album.nome = elemento.innerText;
+        salvarTudo();
+      }
+    }
+
+    async function trocarImagemAlbum(id, tipo, evento) {
+      if (!exigirLogin()) return;
+      const arquivo = evento.target.files[0];
+      if (!arquivo) return;
+      const album = listaAlbuns.find(a => a.id === id);
+      if (!album) return;
+
+      const campo = tipo === 'capa' ? 'capaUrl' : 'iconeUrl';
+      const idImagem = novoIdImagem();
+      const referencia = prefixoImagemPersistida + idImagem;
+      const referenciaAntiga = album[campo];
+      const url = safeCreateObjectURL(arquivo);
+      if (!url) return;
+
+      try {
+        await gravarBlobImagem(idImagem, arquivo);
+        album[campo] = referencia;
+        urlsTemporariasImagens.set(idImagem, url);
+        if (!salvarTudo()) throw new Error('Falha ao salvar no armazenamento local.');
+      } catch (erro) {
+        album[campo] = referenciaAntiga;
+        salvarTudo();
+        urlsTemporariasImagens.delete(idImagem);
+        safeRevokeObjectURL(url);
+        await apagarBlobImagem(idImagem).catch(() => {});
+        alert('Não foi possível salvar a imagem.');
+        return;
+      } finally {
+        evento.target.value = '';
+      }
+      await excluirImagemPersistida(referenciaAntiga).catch(() => {});
+      renderizarHome();
+      if (albumAbertoId === id) renderizarAlbumAberto(id);
+    }
+
+    /* =========================================================================
+       ÁLBUM ABERTO & EDIÇÃO DINÂMICA
+       ========================================================================= */
+    function abrirAlbum(id) {
+      if (!exigirLogin()) return;
+      albumAbertoId = id;
+      document.getElementById('tela-home').classList.remove('ativa');
+      document.getElementById('tela-album').classList.add('ativa');
+      renderizarAlbumAberto(id);
+    }
+
+    function voltarParaHome() {
+      albumAbertoId = null;
+      document.getElementById('player-audio').pause();
+      atualizarControlePlayerMobile();
+      document.getElementById('tela-album').classList.remove('ativa');
+      document.getElementById('tela-home').classList.add('ativa');
+      renderizarHome();
+    }
+
+    function renderizarAlbumAberto(id) {
+      const album = listaAlbuns.find(a => a.id === id);
+      if (!album) return;
+
+      document.body.style.backgroundColor = album.corFundo || '#fff0f5';
+      document.getElementById('cor-fundo-pasta').value = album.corFundo || '#fff0f5';
+      document.getElementById('capa-aberta').src = urlImagem(album.capaUrl);
+      
+      const tituloEl = document.getElementById('titulo-aberto');
+      tituloEl.innerText = album.nome;
+      tituloEl.style.fontFamily = album.fonte;
+      
+      document.getElementById('select-som').value = album.somUrl;
+      document.getElementById('select-fonte').value = album.fonte;
+
+      const player = document.getElementById('player-audio');
+      if (album.somUrl) {
+        player.src = album.somUrl;
+        player.play().catch(() => {});
+      } else {
+        player.pause();
+      }
+      atualizarControlePlayerMobile();
+
+      const conteinerFotos = document.getElementById('conteiner-fotos-album');
+      conteinerFotos.innerHTML = '';
+
+      album.fotos.forEach((foto) => {
+        const card = document.createElement('div');
+        card.className = 'album-card';
+        
+        card.innerHTML = `
+          <div class="controles-foto-topo">
+             <button class="btn-delicado btn-apagar" onclick="apagarFoto(${foto.id})">Apagar</button>
+          </div>
+          
+          <h3 class="titulo-foto" contenteditable="true" onblur="salvarTextoFoto(${foto.id}, 'titulo', this)">${foto.titulo}</h3>
+          <p contenteditable="true" onblur="salvarTextoFoto(${foto.id}, 'descricao', this)">${foto.descricao}</p>
+          
+          <div class="foto-container ${foto.efeito || ''}" id="container-${foto.id}">
+            <img src="${urlImagem(foto.thumbnailUrl || foto.fotoUrl)}" class="foto-memoria" loading="lazy">
+          </div>
+
+          <div class="painel-edicao">
+            <div class="controles-efeito">
+              <button class="btn-delicado btn-compacto" onclick="aplicarEfeitoFoto(${foto.id}, 'efeito-polaroid')">📸 Polaroid</button>
+              <button class="btn-delicado btn-compacto" onclick="aplicarEfeitoFoto(${foto.id}, 'efeito-vintage')">🎞️ Vintage</button>
+              <button class="btn-delicado btn-compacto" onclick="aplicarEfeitoFoto(${foto.id}, 'efeito-noir')">🖤 P&amp;B</button>
+              <button class="btn-delicado btn-compacto" onclick="aplicarEfeitoFoto(${foto.id}, '')">🔄 Normal</button>
+            </div>
+            <div class="emojipedia-tabs">
+              <button class="btn-delicado" onclick="mudarEmojiAba(${foto.id}, 'amor')">💖</button>
+              <button class="btn-delicado" onclick="mudarEmojiAba(${foto.id}, 'rostos')">😀</button>
+              <button class="btn-delicado" onclick="mudarEmojiAba(${foto.id}, 'natureza')">🌿</button>
+              <button class="btn-delicado" onclick="mudarEmojiAba(${foto.id}, 'comida')">☕</button>
+            </div>
+            <div class="box-emojipedia" id="box-emoji-${foto.id}">
+              ${gerarHTMLListaEmojis(foto.id, 'amor')}
+            </div>
+          </div>
+        `;
+        card.style.setProperty('--fonte-album', album.fonte);
+        conteinerFotos.appendChild(card);
+      });
+    }
+
+    function salvarTituloAlbum() {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (album) {
+        album.nome = document.getElementById('titulo-aberto').innerText;
+        salvarTudo();
+      }
+    }
+
+    function salvarTextoFoto(fotoId, campo, elemento) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      const foto = album.fotos.find(f => f.id === fotoId);
+      if (foto) {
+        foto[campo] = elemento.innerText;
+        salvarTudo();
+      }
+    }
+
+    function alterarFonteAlbum(fonte) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (album) {
+        album.fonte = fonte;
+        salvarTudo();
+        renderizarAlbumAberto(albumAbertoId);
+      }
+    }
+
+    function alterarCorFundoAlbum(cor) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (album) {
+        album.corFundo = cor;
+        salvarTudo();
+        document.body.style.backgroundColor = cor;
+      }
+    }
+
+    function alterarSomAlbum(url) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (album) {
+        album.somUrl = url;
+        salvarTudo();
+        const player = document.getElementById('player-audio');
+        if (url) {
+          player.src = url;
+          player.play();
+        } else {
+          player.pause();
+        }
+        atualizarControlePlayerMobile();
+      }
+    }
+
+    async function uploadFotos(evento) {
+      if (!exigirLogin()) return;
+      const arquivos = Array.from(evento.target.files || []);
+      if (!arquivos.length) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (!album) return;
+
+      const novasFotos = [];
+      const status = document.getElementById('upload-status');
+      status.textContent = `Preparando ${arquivos.length} foto(s)...`;
+      try {
+        for (const [indice, arquivo] of arquivos.entries()) {
+          const imagemComprimida = await MediaService.comprimirImagem(arquivo, 1200, 0.82, progresso => {
+            const total = Math.round(((indice + (progresso / 100) * 0.7) / arquivos.length) * 100);
+            status.textContent = `Otimizando fotos: ${total}%`;
+          });
+          const miniatura = await MediaService.gerarThumbnail(imagemComprimida, 200);
+          status.textContent = `Gerando miniaturas: ${Math.round(((indice + 0.85) / arquivos.length) * 100)}%`;
+          const idImagem = novoIdImagem();
+          const idMiniatura = novoIdImagem();
+          const url = safeCreateObjectURL(imagemComprimida);
+          const urlMiniatura = safeCreateObjectURL(miniatura);
+          if (!url || !urlMiniatura) {
+            safeRevokeObjectURL(url);
+            safeRevokeObjectURL(urlMiniatura);
+            throw new Error('Não foi possível preparar a foto otimizada.');
+          }
+
+          urlsTemporariasImagens.set(idImagem, url);
+          urlsTemporariasImagens.set(idMiniatura, urlMiniatura);
+          const foto = {
+            id: Date.now() + Math.random(),
+            titulo: "Momento Especial",
+            descricao: "Clique para editar...",
+            fotoUrl: prefixoImagemPersistida + idImagem,
+            thumbnailUrl: prefixoImagemPersistida + idMiniatura,
+            efeito: ''
+          };
+          novasFotos.push(foto);
+
+          try {
+            status.textContent = `Salvando fotos: ${Math.round(((indice + 0.9) / arquivos.length) * 100)}%`;
+            await gravarBlobImagem(idImagem, imagemComprimida);
+            await gravarBlobImagem(idMiniatura, miniatura);
+            status.textContent = `Salvando fotos: ${Math.round(((indice + 1) / arquivos.length) * 100)}%`;
+          } catch (erro) {
+            await Promise.all([
+              excluirImagemPersistida(foto.fotoUrl).catch(() => {}),
+              excluirImagemPersistida(foto.thumbnailUrl).catch(() => {})
+            ]);
+            throw erro;
+          }
+        }
+
+        album.fotos.push(...novasFotos);
+        if (!salvarTudo()) throw new Error('Não foi possível salvar o álbum.');
+        status.textContent = `${novasFotos.length} foto(s) otimizada(s) e salva(s).`;
+        renderizarAlbumAberto(albumAbertoId);
+      } catch (erro) {
+        album.fotos = album.fotos.filter(foto => !novasFotos.some(nova => nova.id === foto.id));
+        salvarTudo();
+        await Promise.all(novasFotos.flatMap(foto => [foto.fotoUrl, foto.thumbnailUrl].map(referencia => excluirImagemPersistida(referencia).catch(() => {}))));
+        status.textContent = 'Não foi possível otimizar ou salvar as fotos.';
+      } finally {
+        evento.target.value = '';
+      }
+    }
+
+    async function apagarFoto(fotoId) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      if (album && confirm("Apagar esta foto?")) {
+        const foto = album.fotos.find(item => item.id === fotoId);
+        const indice = album.fotos.indexOf(foto);
+        album.fotos = album.fotos.filter(f => f.id !== fotoId);
+        if (!salvarTudo()) {
+          album.fotos.splice(indice, 0, foto);
+          alert('Não foi possível atualizar o álbum.');
+          return;
+        }
+        await excluirImagemPersistida(foto.fotoUrl).catch(() => {});
+        await excluirImagemPersistida(foto.thumbnailUrl).catch(() => {});
+        renderizarAlbumAberto(albumAbertoId);
+      }
+    }
+
+    function aplicarEfeitoFoto(fotoId, efeito) {
+      if (!exigirLogin()) return;
+      const album = listaAlbuns.find(a => a.id === albumAbertoId);
+      const foto = album.fotos.find(f => f.id === fotoId);
+      if (foto) {
+        foto.efeito = efeito;
+        salvarTudo();
+        renderizarAlbumAberto(albumAbertoId);
+      }
+    }
+
+    function gerarHTMLListaEmojis(idFoto, categoria) {
+      return EMOJIS[categoria].map(emoji => 
+        `<span class="emoji-item" onclick="adicionarFigurinha(${idFoto}, '${emoji}')">${emoji}</span>`
+      ).join('');
+    }
+
+    function mudarEmojiAba(idFoto, categoria) {
+      if (!exigirLogin()) return;
+      document.getElementById(`box-emoji-${idFoto}`).innerHTML = gerarHTMLListaEmojis(idFoto, categoria);
+    }
+
+    function adicionarFigurinha(idFoto, emoji) {
+      if (!exigirLogin()) return;
+      const container = document.getElementById(`container-${idFoto}`);
+      const el = document.createElement('div');
+      el.className = 'figurinha';
+      el.innerText = emoji;
+      el.style.left = '45%';
+      el.style.top = '40%';
+      el.ondblclick = function() { el.remove(); };
+      
+      tornarArrastavel(el);
+      container.appendChild(el);
+    }
+
+    function tornarArrastavel(elemento) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      elemento.onmousedown = arrastarMouse;
+      
+      function arrastarMouse(e) {
+        e.preventDefault();
+        pos3 = e.clientX; pos4 = e.clientY;
+        document.onmouseup = fecharArrastar;
+        document.onmousemove = elementoArrastando;
+      }
+      function elementoArrastando(e) {
+        e.preventDefault();
+        pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+        pos3 = e.clientX; pos4 = e.clientY;
+        elemento.style.top = (elemento.offsetTop - pos2) + "px";
+        elemento.style.left = (elemento.offsetLeft - pos1) + "px";
+      }
+      function fecharArrastar() {
+        document.onmouseup = null; document.onmousemove = null;
+      }
+    }
+
+    /* =========================================================================
+       CLIMA TEMPO AO VIVO & ANIMAÇÃO
+       ========================================================================= */
+    async function atualizarClimaTempo() {
+      const iconeEl = document.getElementById('icone-clima');
+      const textoEl = document.getElementById('texto-clima');
+      
+      try {
+        const resposta = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-23.4547&longitude=-46.5333&current_weather=true`);
+        const dados = await resposta.json();
+        const temp = Math.round(dados.current_weather.temperature);
+        const codigo = dados.current_weather.weathercode;
+        
+        let simbolo = '🌸';
+        let texto = 'Primavera / Ameno';
+        
+        if ([51, 53, 55, 61, 63, 65].includes(codigo)) {
+          simbolo = '🌧️';
+          texto = 'Chuvoso';
+        } else if (temp > 26) {
+          simbolo = '☀️';
+          texto = 'Ensolarado';
+        }
+        
+        iconeEl.innerText = simbolo;
+        textoEl.innerText = `${temp}°C em Guarulhos • ${texto}`;
+        gerarParticulasClima(simbolo);
+      } catch (e) {
+        iconeEl.innerText = '🌸';
+        textoEl.innerText = `Guarulhos • Clima Agradável`;
+        gerarParticulasClima('🌸');
+      }
+    }
+
+    function gerarParticulasClima(simbolo) {
+      const conteiner = document.getElementById('conteiner-particulas');
+      conteiner.innerHTML = '';
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.classList.add('particula');
+        el.innerText = simbolo;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (Math.random() * 4 + 3) + 's';
+        el.style.fontSize = (Math.random() * 12 + 14) + 'px';
+        el.style.animationDelay = Math.random() * 3 + 's';
+        conteiner.appendChild(el);
+      }
+    }
+
+    window.addEventListener('pagehide', evento => {
+      if (evento.persisted) return;
+      for (const url of urlsTemporariasImagens.values()) safeRevokeObjectURL(url);
+      urlsTemporariasImagens.clear();
+    });
+
+    async function iniciarAplicacao() {
+      if (supabaseConfigurado) supabaseClient = await criarClienteSupabase();
+
+      if (!supabaseClient) {
+        supabaseModoDemonstracao = true;
+        usuarioComSessao = false;
+        autenticado = true;
+        carregarPerfilAtual();
+        console.warn('Modo visualização ativo: backend em nuvem aguardando configuração');
+        atualizarEstadoBotaoAuth();
+        esconderModalLogin();
+      } else {
+        supabaseModoDemonstracao = false;
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error) {
+          document.getElementById('auth-status').textContent = 'Não foi possível verificar a sessão. Atualize a página.';
+        }
+        atualizarEstadoAuth(data?.session);
+        if (data?.session) {
+          esconderModalLogin();
+          RealtimeService.conectar();
+          renderizarHome();
+        } else {
+          exibirOpcoesLogin();
+          mostrarModalLogin();
+        }
+        supabaseClient.auth.onAuthStateChange((evento, session) => {
+          atualizarEstadoAuth(session);
+          if (evento === 'SIGNED_IN') RealtimeService.conectar();
+          if (evento === 'SIGNED_OUT') {
+            RealtimeService.desconectar();
+            exibirOpcoesLogin();
+            mostrarModalLogin();
+          }
+        });
+      }
+
+      document.addEventListener('mousemove', registrarAtividadeSegura);
+      document.addEventListener('keydown', registrarAtividadeSegura);
+      document.addEventListener('click', registrarAtividadeSegura);
+      document.addEventListener('touchstart', registrarAtividadeSegura, { passive: true });
+      window.addEventListener('focus', registrarAtividadeSegura);
+      const player = document.getElementById('player-audio');
+      player.addEventListener('play', atualizarControlePlayerMobile);
+      player.addEventListener('pause', atualizarControlePlayerMobile);
+      player.addEventListener('ended', atualizarControlePlayerMobile);
+      atualizarControlePlayerMobile();
+      setInterval(() => {
+        if (!supabaseModoDemonstracao && supabaseClient && autenticado && Date.now() - ultimaAtividade >= INACTIVITY_TIMEOUT_MS) {
+          supabaseClient.auth.signOut();
+        }
+      }, 30000);
+
+      await prepararImagensPersistidas().catch(() => {});
+      renderizarHome();
+      await carregarFeedInicial();
+      atualizarContadorTempoJuntos();
+      setInterval(() => {
+        if (perfilAtual.relationshipStart) atualizarContadorTempoJuntos();
+      }, 1000);
+      atualizarClimaTempo();
+    }
+
+    iniciarAplicacao();
+  </script>
+</body>
+</html>
